@@ -1,0 +1,106 @@
+<h1>Order #<?php echo $view->info->order_id; ?> - <?php echo ucfirst($view->info->status); ?></h1>
+<table border="0" width="90%">
+<tr><td colspan="2"><strong>Order Details:</strong>
+
+<div style="float: right;">
+<form action="<?php $this->link(); ?>" method="post">
+<select name="status">
+<?php 
+	foreach($view->status as $stat) {
+		echo '<option value="'.$stat.'" '.($view->info->status == $stat ? 'selected' : '').'>'.ucwords($stat).'</option>';
+	}
+?>
+</select>
+<input type="submit" name="save_status" value="Update" />
+</form>
+</div>
+
+</td></tr>
+<tr><td>Event Name:</td><td><?php echo $view->info->event_name; ?></td></tr>
+<tr><td>Gobo Type:</td><td><?php echo $view->info->gobo_type; ?></td></tr>
+<tr><td>Gobo Fixture:</td><td><?php echo $view->info->gobo_fixture; ?></td></tr>
+<tr><td>Gobo Text:</td><td><?php echo $view->info->gobo_text; ?></td></tr>
+<tr><td>Gobo Font:</td><td><?php echo $view->info->gobo_font; ?></td></tr>
+<tr><td valign="top">Gobo Image:</td><td>
+<?php 
+if(!empty($view->info->gobo_image)):
+	if(preg_match('/\.(jpg|gif|png)$/i', $view->info->gobo_image)):
+?>
+<img src="<?php echo $view->info->gobo_image; ?>" style="max-width: 300px; max-height: 300px;" />
+<?php
+	else:
+?>
+<a href="<?php echo $view->info->gobo_image; ?>" target="_blank">View File</a>
+<?php
+	endif;
+else:
+echo 'No image(s) uploaded';
+endif;
+?>
+</td></tr>
+<tr><td>Instructions:</td><td><?php echo $view->info->gobo_instructions; ?></td></tr>
+<tr><td>Quantity:</td><td><?php echo $view->info->quantity; ?></td></tr>
+<tr><td>Deliver By:</td><td><?php echo date('M. j, Y', $view->info->deliver_by); ?></td></tr>
+<tr><td colspan="2">&nbsp;</td></tr>
+<tr><td colspan="2"><strong>Shipping Details:</strong></td></tr>
+<tr><td>Attention:</td><td><?php echo $view->info->to_name; ?></td></tr>
+<tr><td>Business:</td><td><?php echo $view->info->business_name; ?></td></tr>
+<tr><td>Street:</td><td><?php echo $view->info->street; ?></td></tr>
+<tr><td></td><td><?php echo $view->info->street_cont; ?></td></tr>
+<tr><td>City:</td><td><?php echo $view->info->city; ?></td></tr>
+<tr><td>State:</td><td><?php echo $view->info->state; ?></td></tr>
+<tr><td>Zip Code:</td><td><?php echo $view->info->zip; ?></td></tr>
+<tr><td>Country:</td><td><?php echo $view->info->country; ?></td></tr>
+<?php 
+if(!@file_exists('docroot/orders/proofs/'.$view->info->order_id.'.jpg')):
+?>
+<tr><td colspan="2">&nbsp;</td></tr>
+<tr><td colspan="2"><strong>Upload Proof:</strong></td></tr>
+<tr><td>File (JPG):</td><td>
+<form method="post" action="<?php echo $view->link(); ?>" enctype="multipart/form-data">
+<input type="file" name="proof" /> <input type="hidden" name="id" value="<?php echo $view->info->order_id; ?>" />
+<input type="submit" name="upload_proof" value="Upload" /></form></td></tr>
+<?php else: ?>
+<tr><td colspan="2">&nbsp;</td></tr>
+<tr><td colspan="2"><strong>Preview:</strong></td></tr>
+<tr><td>Proof:</td><td>
+<img src="docroot/orders/proofs/<?php echo $view->info->order_id; ?>.jpg" width="300" height="300" />
+</td></tr>
+<?php endif; ?>
+
+<tr><td colspan="2">&nbsp;</td></tr>
+<tr><td colspan="2"><strong>Billing:</strong></td></tr>
+<tr><td>Estimated Price:</td><td>$<?php echo $view->info->est_price; ?></td></tr>
+<tr><td>PO Number:</td><td>
+<form method="post" action="<?php echo $view->link(); ?>">
+<input type="text" name="po" value="<?php echo $view->info->purchase_order; ?>" /> <input type="hidden" name="id" value="<?php echo $view->info->order_id; ?>" />
+<input type="submit" name="save_po" value="Update" /></form>
+</td></tr>
+
+<tr><td colspan="2">&nbsp;</td></tr>
+<tr><td colspan="2"><strong>Order Tracking:</strong></td></tr>
+<tr><td>Tracking Number:</td><td>
+<form method="post" action="<?php echo $view->link(); ?>">
+<input type="text" name="tracking" value="<?php echo $view->info->tracking_number; ?>" /> <input type="hidden" name="id" value="<?php echo $view->info->order_id; ?>" />
+<input type="submit" name="save_tracking" value="Update" /></form>
+</td></tr>
+</table>
+<h2>Order History:</h2>
+<?php foreach($view->notes as $note) { 
+	$gravatar = $grav_url = "http://www.gravatar.com/avatar/" . md5( strtolower( trim( $note->email ) ) ) . "&s=50";
+	echo '<table width="90%" id="history"><tr>';
+	echo '<td width="20%" style="text-align: center;" valign="top"><img src="'.$gravatar.'" /><br />';
+	echo '<strong>'.date('g:ia', strtotime($note->datetime)).'</strong><br />';
+	echo date('M. j, Y', strtotime($note->datetime)).'</td>';
+	//echo '<td width="80%" valign="top" id="text">'.preg_replace('/[0-9][A-Z0-9]{12,20}/', '<a href="http://wwwapps.ups.com/etracking/tracking.cgi?TypeOfInquiryNumber=T&InquiryNumber1='.$1.'">'.$1.'</a>', $note->message).'</td>';
+	echo '<td width="80%" valign="top" id="text">'.$note->message.'</td>';
+	echo '</tr></table>';
+}
+?>
+<h2>Add Note</h2>
+<form method="post" action="<?php echo $view->link(); ?>">
+<input type="hidden" name="id" value="<?php echo $view->info->order_id; ?>" />
+<textarea name="note"></textarea><br />
+<input type="hidden" name="visible" value="1" /><?php /* Visible to Customer &nbsp; &nbsp; */?>
+<input type="submit" name="save_note" value="Add Note" class="button" />
+</form>

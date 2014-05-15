@@ -1,0 +1,12 @@
+<h1>Forgot Your Password?</h1>
+No problem!  Just enter your email and we will send it to you!<br /><br />
+<form action="<?php echo $this->link('default','default','forgot'); ?>" method="post">
+<?php if($view->success): ?>
+	<div class="success"><?php echo $view->success; ?></div>
+<?php elseif($view->error): ?>
+	<div class="error"><?php echo $view->error; ?></div>
+<?php endif; ?>
+Your Email: <input type="text" name="email" value="<?php echo $_POST['email']; ?>" />
+<input type="submit" value="Get Password" /><br /><br />
+<a href="<?php echo $this->link('default', 'default', 'default'); ?>">&laquo; Back to Login</a>
+</form>

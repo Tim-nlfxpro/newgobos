@@ -1,0 +1,59 @@
+<h1>My Orders
+<div style="float: right;">
+<input type="button" value="Create Order" class="button" onclick="location.href='<?php echo $view->link('customer','order','create'); ?>';">
+</div>
+</h1>
+<?php
+if(count($view->myorders) == 0):
+?>
+<center>
+You do not have any orders yet...<br /><br /><br />
+<input type="button" style="font-size: 24px;" class="button" value="Create Your First Order" onclick="location.href = '<?php echo $view->link('customer','order','create'); ?>';" />
+<br /><br /><br /><br />
+<a href="<?php echo $view->link('customer','order','create'); ?>" style="text-decoration: none;">
+<img src="docroot/images/gobo_steel.jpg" width="140" border="0" />
+<img src="docroot/images/gobo_one_color.jpg" width="140" border="0" />
+<img src="docroot/images/gobo_two_color.jpg" width="140" border="0" />
+<img src="docroot/images/gobo_full_color.jpg" width="140" border="0" />
+</a><br /><br /><br />
+</center>
+<?php
+else:
+
+	echo '<table border="0" width="100%">';
+	
+	echo '<tr class="header">';
+	echo '<td>Order #</td>';
+	echo '<td>Event Name</td>';
+	echo '<td>Needed By</td>';
+	echo '<td>Order Status</td>';
+	echo '<td>&nbsp;</td>';
+	echo '</tr>';
+	
+	foreach($view->myorders as $order) {
+		
+		echo '<tr>';
+		echo '<td>#'.$order->order_id.'</td>';
+		echo '<td>'.$order->event_name.'</td>';
+		echo '<td>'.$order->deliver_by.'</td>';
+		
+		// Status ---
+		$text = ucfirst($order->status);
+		
+		if($order->status == 'proof'):
+			$text .= ' - Preview';
+		elseif($order->status == 'shipped'):
+			$text .= ' - '.$order->tracking_number;
+		endif;
+		
+		echo '<td>'.$text.'</td>';
+		// ---
+		
+		echo '<td><a href="'.$this->link('customer','order','view','id='.$order->order_id).'">More Details</a></td>';
+		echo '</tr>';
+	}
+	
+	echo '</table>';
+
+endif;
+?>

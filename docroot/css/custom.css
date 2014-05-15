@@ -1,0 +1,55 @@
+@CHARSET "ISO-8859-1";
+/* TOYS FOR TOTS 
+body { background: #c00000; }
+#header, #logo { background: none; }
+/*#menubar, #footer { background: #069 url(none); }*/
+#site_content { background-image: none; padding-left: 20px; padding-right: 20px; }
+
+#history #text { font-size: 18px; }
+#history #text .note { width: 90%; margin: 10px; border: 1px solid #666; background: #fff; font-size: 12px; padding: 5px; }
+#history #text .hiddennote { width: 90%; margin: 10px; border: 1px solid #666; background: #ffc; font-size: 12px; padding: 5px; }
+textarea { width: 90%; height: 150px; }
+.button { font-size: 16px; padding: 5px; }
+.whitebg { background: #fff; }
+
+*/
+
+table .header td { background: #333; color: #fff; }
+
+.success {
+	border: #030;
+	background: #090;
+	color: #fff;
+	font-weight: bold;
+	padding: 5px 10px;
+	margin: 10px 0;
+}
+
+.error {
+	border: #300;
+	background: #f33;
+	color: #fff;
+	font-weight: bold;
+	padding: 5px 10px;
+	margin: 10px 0;
+}
+
+.pager_container {
+	font-weight: bold;
+}
+
+.pager {
+	display: block;
+	float: left;
+	padding: 3px 8px;
+	text-align: center;
+	font-weight: bold;
+	border: 1px solid #333;
+	text-decoration: none;
+	margin: 0 5px 0 5px;
+}
+
+.pager_active {
+	background: #333;
+	color: #fff;
+}

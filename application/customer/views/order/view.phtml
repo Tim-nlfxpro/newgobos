@@ -1,0 +1,82 @@
+<h1>Order #<?php echo $view->info->order_id; ?> - <?php echo ucwords($view->info->status); ?></h1>
+<table border="0" width="90%">
+<tr><td colspan="2"><strong>Order Details:</strong></td></tr>
+<tr><td>Event Name:</td><td><?php echo $view->info->event_name; ?></td></tr>
+<tr><td>Gobo Type:</td><td><?php echo $view->info->gobo_type; ?></td></tr>
+<tr><td>Gobo Fixture:</td><td><?php echo $view->info->gobo_fixture; ?></td></tr>
+<tr><td>Gobo Text:</td><td><?php echo $view->info->gobo_text; ?></td></tr>
+<tr><td>Gobo Font:</td><td><?php echo $view->info->gobo_font; ?></td></tr>
+<tr><td valign="top">Gobo Image:</td><td>
+<?php 
+if(!empty($view->info->gobo_image)):
+	if(preg_match('/\.(jpg|gif|png)$/i', $view->info->gobo_image)):
+?>
+<img src="<?php echo $view->info->gobo_image; ?>" style="max-width: 300px; max-height: 300px;" />
+<?php
+	else:
+?>
+<a href="<?php echo $view->info->gobo_image; ?>" target="_blank">View File</a>
+<?php
+	endif;
+else:
+echo 'No image(s) uploaded';
+endif;
+?>
+</td></tr>
+<tr><td>Instructions:</td><td><?php echo $view->info->gobo_instructions; ?></td></tr>
+<tr><td>Quantity:</td><td><?php echo $view->info->quantity; ?></td></tr>
+<tr><td>Deliver By:</td><td><?php echo date('M. j, Y', $view->info->deliver_by); ?></td></tr>
+<tr><td colspan="2">&nbsp;</td></tr>
+<tr><td colspan="2"><strong>Shipping Details:</strong></td></tr>
+<tr><td>Attention:</td><td><?php echo $view->info->to_name; ?></td></tr>
+<tr><td>Business:</td><td><?php echo $view->info->business_name; ?></td></tr>
+<tr><td>Street:</td><td><?php echo $view->info->street; ?></td></tr>
+<tr><td></td><td><?php echo $view->info->street_cont; ?></td></tr>
+<tr><td>City:</td><td><?php echo $view->info->city; ?></td></tr>
+<tr><td>State:</td><td><?php echo $view->info->state; ?></td></tr>
+<tr><td>Zip Code:</td><td><?php echo $view->info->zip; ?></td></tr>
+<tr><td>Country:</td><td><?php echo $view->info->country; ?></td></tr>
+<?php 
+if(@file_exists('docroot/orders/proofs/'.$view->info->order_id.'.jpg')):
+?>
+<tr><td colspan="2">&nbsp;</td></tr>
+<tr><td colspan="2"><strong>Preview:</strong></td></tr>
+<tr><td>Proof:</td><td>
+<img src="docroot/orders/proofs/<?php echo $view->info->order_id; ?>.jpg" width="300" height="300" />
+<?php if($view->info->status == 'proof'): ?>
+<br />
+<form method="post" action="<?php echo $view->link(); ?>">
+<input type="hidden" name="id" value="<?php echo $view->info->order_id; ?>" />
+<input type="radio" name="accept" value="yes" /> I approve for final production<br />
+<input type="radio" name="accept" value="no" /> I DO NOT approve this proof<br />
+<input type="submit" name="save_proof" value="Respond to Proof" />
+</form>
+<?php endif; ?>
+</td></tr>
+<?php endif; ?>
+<?php if($view->info->status == 'shipped'): ?>
+<tr><td colspan="2">&nbsp;</td></tr>
+<tr><td colspan="2"><strong>Order Tracking:</strong></td></tr>
+<tr><td>Tracking Number:</td><td>
+<a target="_blank" href="http://wwwapps.ups.com/etracking/tracking.cgi?TypeOfInquiryNumber=T&InquiryNumber1=<?php echo $view->info->tracking_number; ?>">
+<?php echo $view->info->tracking_number; ?></a></td></tr>
+<?php endif; ?>
+</table>
+<h2>Order History:</h2>
+<?php foreach($view->notes as $note) { 
+	$gravatar = $grav_url = "http://www.gravatar.com/avatar/" . md5( strtolower( trim( $note->email ) ) ) . "&s=50";
+	echo '<table width="90%" id="history"><tr>';
+	echo '<td width="20%" style="text-align: center;" valign="top"><img src="'.$gravatar.'" /><br />';
+	echo '<strong>'.date('g:ia', strtotime($note->datetime)).'</strong><br />';
+	echo date('M. j, Y', strtotime($note->datetime)).'</td>';
+	echo '<td width="80%" valign="top" id="text">'.$note->message.'</td>';
+	echo '</tr></table>';
+}
+?>
+<h2>Add Note</h2>
+<form method="post" action="<?php echo $view->link(); ?>">
+<input type="hidden" name="id" value="<?php echo $view->info->order_id; ?>" />
+<textarea name="note"></textarea><br />
+<input type="checkbox" name="needresponse" id="needresponse" value="1" /><label for="needresponse"> Change status to &quot;Awaiting Reply from NLFX&quot;</label><br /><br />
+<input type="submit" name="save_note" value="Add Note" class="button" />
+</form>

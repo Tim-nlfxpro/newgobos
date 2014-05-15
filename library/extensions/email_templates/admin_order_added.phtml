@@ -1,0 +1,14 @@
+New Order Placed:
+
+Order ID: <?php echo $data['order_id']; ?>
+Gobo Type: <?php echo $data['gobo_type']; ?> 
+Gobo Fixture: <?php echo $data['gobo_fixture']; ?>
+Event Name: <?php echo $data['event_name']; ?>
+Quantity: <?php echo $data['quantity']; ?>
+Needed By: <?php echo $data['deliver_by']; ?>
+
+Special Instructions: 
+<?php echo $data['gobo_instructions']; ?>
+
+
+http://gobos.nlfxpro.com/index.php?module=admin&controller=order&view=view&id=<?php echo $data['order_id']; ?>

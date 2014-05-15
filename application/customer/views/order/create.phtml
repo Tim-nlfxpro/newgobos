@@ -1,0 +1,182 @@
+<script language="javascript">
+availableTags = ['F1: Adobe Garamond Pro',
+                 'F2: Alexandria Script Normal',
+                 'F3: Amienne',
+                 'F4: Aphrodite Contextual',
+                 'F5: Baroque Script',
+                 'F6: Bickham Script Pro',
+                 'F7: Bickham Script Fancy 2',
+                 'F8: Black Chancery',
+                 'F9: Brush Script Std',
+                 'F10: Copperplate',
+                 'F11: DragonFly',
+                 'F12: Easy Street EPS',
+                 'F13: Edwadian Script ITC',
+                 'F14: English III Presto BT',
+                 'F15: Footlight MT Light',
+                 'F16: Futura',
+                 'F17: KB Chopin Script',
+                 'F18: Lorelei',
+                 'F19: Lucida Calligraphy',
+                 'F20: Luddite',
+                 'F21: Monterey BT',
+                 'F22: New York',
+                 'F23: Old English Text MT',
+                 'F24: Old Script',
+                 'F25: Optima',
+                 'F26: Park Avenue',
+                 'F27: Scriptina',
+                 'F28: Shelly Allegro',
+                 'F29: Trajan Pro',
+                 'F30: Vivaldi',
+                 'F31: Zapfino'];
+
+$(function() {
+	$('#type').change(function() { update_price(); });
+	$('#qty').change(function() { update_price(); });
+	$('#price').html('$59.00');
+	$('#price_a').html('59');
+	$('#price_b').html('25');
+
+	$( "#gobo_font" ).autocomplete({
+		source: availableTags
+	});
+
+	$('#address').change(function() {
+		if($('#address').val() == 'new') {
+			$('#new_address').show();
+		} else {
+			$('#new_address').hide();
+		}
+	});
+
+	if($('#address').val() == 'new') {
+		$('#new_address').show();
+	}
+});
+
+function update_price() {
+	if($('#type').val() == 'Steel') {
+		a = 59;
+		b = 25;
+	} else if($('#type').val() == 'Cool Ink HD') {
+		a = 59;
+		b = 59;
+	} else if($('#type').val() == '1 Color Glass') {
+		a = 149;
+		b = 75;
+	} else if($('#type').val() == '2 Color Glass') {
+		a = 289;
+		b = 209;
+	} else if($('#type').val() == 'Full Color Glass') {
+		a = 485;
+		b = 335;
+	}
+
+	qty = $('#qty').val() - 1;
+	price = a + b * qty;
+	$('#price_a').html(a);
+	$('#price_b').html(b);
+	$('#est_price').val(price);
+	if (price % 1 === 0) {
+		$('#price').fadeOut().html('$'+price+'.00').fadeIn();
+		
+	} else {
+		$('#price').fadeOut().html('$'+price).fadeIn();
+	}
+}
+</script>
+
+<h1>Create an Order</h1>
+<form action="<?php $this->link(); ?>" method="post" enctype="multipart/form-data">
+<table border="0" width="90%">
+<tr><td>Event Name:</td><td><input type="text" name="event_name" value="<?php echo $_POST['event_name']; ?>" /></td></tr>
+<tr><td valign="top">Gobo Type:</td><td>
+<select name="gobo_type" id="type">
+<option value="Steel">Steel</option>
+<option value="Cool Ink HD">Cool Ink HD</option>
+<option value="1 Color Glass">1 Color Glass</option>
+<option value="2 Color Glass">2 Color Glass</option>
+<option value="Full Color Glass">Full Color Glass</option>
+</select><br />
+1st Gobo: <strong>$<span id="price_a"></span></strong> &nbsp; &nbsp; Duplicates: <strong>$<span id="price_b"></span></strong>/ea
+</td></tr>
+<tr><td>Gobo Fixture:</td><td><input type="text" name="gobo_fixture" value="<?php echo $_POST['gobo_fixture']; ?>" /></td></tr>
+<tr><td valign="top">Gobo Text:</td><td><textarea name="gobo_text"><?php echo $_POST['gobo_text']; ?></textarea></td></tr>
+<tr><td>Gobo Font:</td><td><input type="text" name="gobo_font" id="gobo_font" value="<?php echo $_POST['gobo_font']; ?>" /> &nbsp; <a href="docroot/images/fonts.jpg" target="_blank">View Available Fonts</a></td></tr>
+<tr><td valign="top">Gobo Image:</td><td valign="top" style="height: 280px;">
+<strong>Upload Your Own Image:</strong><br /><br />
+<input type="file" name="gobo_image" /><br /><br />
+<strong>Or Use one of Our Standard Designs:</strong><br /><br />
+<div style="float: left;">
+<select name="gobo_design" id="gobo_design" size="8">
+<option value="D0" <?php if(!isset($_POST['gobo_design']) || $_POST['gobo_design'] == 'D0') { echo 'selected'; } ?>>Use Image</option>
+<?php 
+for($i=1; $i<17; $i++) {
+	echo '<option value="D'.$i.'" '.($_POST['gobo_design'] == 'D'.$i ? 'selected' : '').'>D'.$i.'</option>';
+}
+?>
+</select>
+</div>
+<div style="float: left; padding: 0 0 0 25px;">
+<img src="docroot/images/designs/D0.jpg" id="gobo_design_preview" />
+</div>
+<script language="JavaScript">
+$('#gobo_design').change(function() {
+	$('#gobo_design_preview').attr('src','docroot/images/designs/'+$('#gobo_design').val()+'.jpg');
+});
+</script>
+</td></tr>
+<tr><td valign="top">Instructions:</td><td><textarea name="gobo_instructions"><?php echo $_POST['gobo_instructions']; ?></textarea></td></tr>
+<tr><td>Quantity:</td><td>
+<select name="qty" id="qty">
+<?php 
+for($i=1; $i < 11; $i++) {
+	echo '<option value="'.$i.'" '.($_POST['qty'] == $i ? 'selected' : '').'>'.$i.'</option>';
+}
+?>
+</select>
+</td></tr>
+<tr><td>Deliver By:</td><td><input type="text" name="deliver_by" id="deliver_by" value="<?php echo $_POST['deliver_by']; ?>" />
+<script language="javascript">
+$('#deliver_by').datepicker({
+	numberOfMonths: 2,
+	showButtonPanel: true,
+	buttonImage: "docroot/images/calendar.jpg"
+});
+</script>
+</td></tr>
+<tr><td valign="top">Deliver To:</td>
+<td>
+<select name="address" id="address">
+<?php 
+foreach($view->addresses as $add):
+	echo '<option value="'.$add->address_id.'">'.$add->street.', '.$add->city.', '.$add->state.'</option>';
+endforeach; 
+?>
+<optgroup label="--------------------"></optgroup>
+<option value="new">Add a New Address</option>
+</select>
+<div style="display: none;" id="new_address">
+<table>
+<tr><td>Name:</td><td><input type="text" name="address_name" value="<?php echo $_POST['address_name']; ?>" /></td></tr>
+<tr><td>Company:</td><td><input type="text" name="address_company" value="<?php echo $_POST['address_company']; ?>" /></td></tr>
+<tr><td>Street 1:</td><td><input type="text" name="address_street" value="<?php echo $_POST['address_street']; ?>" /></td></tr>
+<tr><td>Street 2:</td><td><input type="text" name="address_street2" value="<?php echo $_POST['address_street2']; ?>" /></td></tr>
+<tr><td>City:</td><td><input type="text" name="address_city" value="<?php echo $_POST['address_city']; ?>" /></td></tr>
+<tr><td>State:</td><td><input type="text" name="address_state" value="<?php echo $_POST['address_state']; ?>" /></td></tr>
+<tr><td>Zipcode:</td><td><input type="text" name="address_zip" value="<?php echo $_POST['address_zip']; ?>" /></td></tr>
+<tr><td>Country:</td><td><input type="text" name="address_country" value="<?php echo $_POST['address_country']; ?>" /></td></tr>
+</table>
+</div>
+</td></tr>
+<tr><td valign="top">Estimated Price:
+<input type="hidden" name="est_price" id="est_price" value="n/a" />
+</td><td>
+<div id="price" style="font-size: 18px; color: #090; font-weight: bold;"></div>
+<small>Price does not include shipping or rush fees</small>
+</td></tr>
+</table>
+<input type="button" value="Cancel" onclick="window.history.go(-1);" class="button" />
+<input type="submit" name="save" value="Create Order" class="button" />
+</form>

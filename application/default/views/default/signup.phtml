@@ -1,0 +1,62 @@
+<form action="<?php echo $view->link('default', 'default', 'login'); ?>" method="post">
+<h1>Create an Account</h1>
+<strong>Thank you <?php echo $_POST['first_name']; ?>!  Please enter your address to complete your account registration.</strong>
+<br />
+<br />
+<table width="100%">
+<tr>
+<td>Ship To:</td>
+<td><input type="text" name="ship_to" value="<?php echo $_POST['ship_to']; ?>" /></td>
+</tr>
+
+<tr>
+<td>Business Name:</td>
+<td><input type="text" name="business" value="<?php echo $_POST['business']; ?>" /></td>
+</tr>
+
+<tr>
+<td>Street:</td>
+<td><input type="text" name="street" value="<?php echo $_POST['street']; ?>" /></td>
+</tr>
+
+<tr>
+<td>Street (Cont):</td>
+<td><input type="text" name="street_cont" value="<?php echo $_POST['street_cont']; ?>" /></td>
+</tr>
+
+<tr>
+<td>City:</td>
+<td><input type="text" name="city" value="<?php echo $_POST['city']; ?>" /></td>
+</tr>
+
+<tr>
+<td>State:</td>
+<td><input type="text" name="state" value="<?php echo $_POST['state']; ?>" /></td>
+</tr>
+
+<tr>
+<td>Postal Code:</td>
+<td><input type="text" name="zip" value="<?php echo $_POST['zip']; ?>" /></td>
+</tr>
+
+<tr>
+<td>Country:</td>
+<td><input type="text" name="country" value="<?php echo $_POST['country']; ?>" /></td>
+</tr>
+
+<tr><td colspan="2">&nbsp;</td></tr>
+
+<tr>
+<td>Phone:</td>
+<td><input type="text" name="phone" value="<?php echo $_POST['phone']; ?>" /></td>
+</tr>
+
+</table>
+
+<input type="hidden" name="first_name" value="<?php echo $_POST['first_name']; ?>" />
+<input type="hidden" name="last_name" value="<?php echo $_POST['last_name']; ?>" />
+<input type="hidden" name="email" value="<?php echo $_POST['email']; ?>" />
+<input type="hidden" name="password" value="<?php echo $_POST['password']; ?>" />
+<input type="text" name="validator" style="display: none;" />
+<input type="submit" name="adduser" value="Register &raquo;" class="button" />
+</form>

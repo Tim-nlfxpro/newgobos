@@ -1,0 +1,89 @@
+<h1>Create an Order</h1>
+<form action="<?php $this->link(); ?>" method="post" enctype="multipart/form-data">
+<table border="0" width="90%">
+<tr><td colspan="2"><strong>Order Status:</strong>
+
+<div style="float: right;">
+<select name="status">
+<?php 
+	foreach($view->status as $stat) {
+		echo '<option value="'.$stat.'">'.ucwords($stat).'</option>';
+	}
+?>
+</select>
+</div>
+
+</td></tr>
+<tr><td>Event Name:</td><td><input type="text" name="event_name" value="<?php echo $_POST['event_name']; ?>" /></td></tr>
+<tr><td>Gobo Type:</td><td>
+<select name="gobo_type">
+<option value="Steel">Steel</option>
+<option value="1 Color Glass">1 Color Glass</option>
+<option value="2 Color Glass">2 Color Glass</option>
+<option value="Full Color Glass">Full Color Glass</option>
+</select>
+</td></tr>
+<tr><td>Gobo Fixture:</td><td><input type="text" name="gobo_fixture" value="<?php echo $_POST['gobo_fixture']; ?>" /></td></tr>
+<tr><td>Gobo Text:</td><td><input type="text" name="gobo_text" value="<?php echo $_POST['gobo_text']; ?>" /></td></tr>
+<tr><td>Gobo Image:</td><td>
+<input type="file" name="gobo_image" />
+</td></tr>
+<tr><td valign="top">Instructions:</td><td><textarea name="gobo_instructions"><?php echo $_POST['gobo_instructions']; ?></textarea></td></tr>
+<tr><td>Quantity:</td><td><input type="text" name="qty" value="<?php echo $_POST['qty']; ?>" /></td></tr>
+<tr><td>Deliver By:</td><td><input type="text" name="deliver_by" id="deliver_by" value="<?php echo $_POST['deliver_by']; ?>" />
+<script language="javascript">
+$('#deliver_by').datepicker({
+	numberOfMonths: 3,
+	showButtonPanel: true,
+	buttonImage: "docroot/images/calendar.jpg"
+});
+</script>
+</td></tr>
+<tr><td colspan="2">&nbsp;</td></tr>
+<tr><td colspan="2"><strong>Customer:</strong></td></tr>
+<tr><td>Customer Name:</td><td>
+<select name="customer_id">
+<?php 
+	foreach($view->customers as $cust) {
+		echo '<option value="'.$cust->customer_id.'">'.$cust->last_name.', '.$cust->first_name.' ('.$cust->email.')</option>';
+	}
+?>
+</select>
+</td></tr>
+<tr><td colspan="2">&nbsp;</td></tr>
+<?php /* 
+<tr><td colspan="2"><strong>Shipping Details:</strong></td></tr>
+<tr><td>Attention:</td><td><?php echo $view->info->to_name; ?></td></tr>
+<tr><td>Business:</td><td><?php echo $view->info->business_name; ?></td></tr>
+<tr><td>Street:</td><td><?php echo $view->info->street; ?></td></tr>
+<tr><td></td><td><?php echo $view->info->street_cont; ?></td></tr>
+<tr><td>City:</td><td><?php echo $view->info->city; ?></td></tr>
+<tr><td>State:</td><td><?php echo $view->info->state; ?></td></tr>
+<tr><td>Zip Code:</td><td><?php echo $view->info->zip; ?></td></tr>
+<tr><td>Country:</td><td><?php echo $view->info->country; ?></td></tr>
+<?php 
+if(!@file_exists('docroot/orders/proofs/'.$view->info->order_id.'.jpg')):
+?>
+<tr><td colspan="2">&nbsp;</td></tr>
+<tr><td colspan="2"><strong>Upload Proof:</strong></td></tr>
+<tr><td>File (JPG):</td><td>
+<form method="post" action="<?php echo $view->link(); ?>" enctype="multipart/form-data">
+<input type="file" name="proof" /> <input type="hidden" name="id" value="<?php echo $view->info->order_id; ?>" />
+<input type="submit" name="upload_proof" value="Upload" /></form></td></tr>
+<?php else: ?>
+<tr><td colspan="2">&nbsp;</td></tr>
+<tr><td colspan="2"><strong>Preview:</strong></td></tr>
+<tr><td>Proof:</td><td>
+<img src="docroot/orders/proofs/<?php echo $view->info->order_id; ?>.jpg" width="300" height="300" />
+</td></tr>
+<?php endif; ?>
+*/ ?>
+<tr><td colspan="2">&nbsp;</td></tr>
+<tr><td colspan="2"><strong>Purchase Order:</strong></td></tr>
+<tr><td>PO Number:</td><td>
+<input type="text" name="po" value="<?php echo $_POST['po']; ?>" />
+</td></tr>
+</table>
+<input type="button" value="Cancel" onclick="window.history.go(-1);" class="button" />
+<input type="submit" name="save" value="Create Order" class="button" />
+</form>

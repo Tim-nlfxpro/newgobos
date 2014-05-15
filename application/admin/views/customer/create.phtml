@@ -1,0 +1,32 @@
+<h1>Create a Customer</h1>
+<?php
+if($view->error):
+	echo '<strong style="color: #900;">'.$view->error.'</strong>';
+endif;
+?>
+<form action="<?php $this->link(); ?>" method="post" enctype="multipart/form-data">
+<table border="0" width="90%">
+<tr><td>First Name:</td><td><input type="text" name="first_name" value="<?php echo $_POST['first_name']; ?>" /></td></tr>
+<tr><td>Last Name:</td><td><input type="text" name="last_name" value="<?php echo $_POST['last_name']; ?>" /></td></tr>
+<tr><td>Email:</td><td><input type="text" name="email" value="<?php echo $_POST['email']; ?>" /></td></tr>
+<tr><td>Phone:</td><td><input type="text" name="phone" value="<?php echo $_POST['phone']; ?>" /></td></tr>
+<tr><td colspan="2">&nbsp;</td></tr>
+<tr><td colspan="2"><strong>Address:</strong></td></tr>
+<tr><td>Ship To:</td><td><input type="text" name="ship_to" value="<?php echo $_POST['ship_to']; ?>" /></td></tr>
+<tr><td>Business:</td><td><input type="text" name="business" value="<?php echo $_POST['business']; ?>" /></td></tr>
+<tr><td>Street:</td><td><input type="text" name="street" value="<?php echo $_POST['street']; ?>" /></td></tr>
+<tr><td>&nbsp;</td><td><input type="text" name="street2" value="<?php echo $_POST['street2']; ?>" /></td></tr>
+<tr><td>City:</td><td><input type="text" name="city" value="<?php echo $_POST['city']; ?>" /></td></tr>
+<tr><td>State:</td><td><input type="text" name="state" value="<?php echo $_POST['state']; ?>" /></td></tr>
+<tr><td>Zipcode:</td><td><input type="text" name="zip" value="<?php echo $_POST['zip']; ?>" /></td></tr>
+<tr><td>Country:</td><td><input type="text" name="country" value="<?php echo $_POST['country']; ?>" /></td></tr>
+<tr><td colspan="2">&nbsp;</td></tr>
+<tr><td colspan="2"><strong>Admin Access:</strong></td></tr>
+<tr><td>Grant Admin Access:</td><td><select name="is_admin">
+<option value="0">No</option>
+<option value="1">Yes</option>
+</select></td></tr>
+</table>
+<input type="button" value="Cancel" onclick="window.history.go(-1);" class="button" />
+<input type="submit" name="save" value="Create Customer" class="button" />
+</form>

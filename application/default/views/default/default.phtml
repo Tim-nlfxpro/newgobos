@@ -1,0 +1,106 @@
+<?php
+$listblock = <<<LISTBLOCK
+<div style="background: #%s; font-size: 13px; padding: 1px;">
+<div style="float: left; width: 20px; padding: 3px; text-align: center;">
+%s
+</div>
+<div style="float: left; width: 30px; padding: 2px;">
+<img src="http://www.freeiconsweb.com/Freeicons/hexapod/%s.png" height="20" align="absmiddle" />
+</div>
+<div style="float: left; width: 80px; padding: 3px;">
+%s-%s
+</div>
+<div style="float: left; width: 365px; padding: 3px;">
+%s
+</div>
+<div style="clear: both;"></div>
+</div>
+LISTBLOCK;
+
+?>
+<select>
+<option onclick="location.href='<?php echo $this->link('default','default','default'); ?>';">Show All Projects</option>
+<?php
+foreach($view->projects as $project) {
+	echo '<option onclick="location.href=\''.$this->link('default','default','default','project='.$project->bugcategory_id).'\';" '.($project->bugcategory_id == $view->selected_project?'selected':'').'>'.$project->bugcategory_name.' - '.$project->bugcategory_short.'</option>';
+}
+?>
+</select>
+<div style="clear: both;"></div>
+
+<div style="width: 70%; float: left;">
+<div style="margin: 10px; border: 1px solid #333;">
+<div style="background: #900; padding: 3px; font-size: 11px; font-weight: bold; color: #fff;">
+My Bugs In Progress
+</div>
+<?php
+$i = 0;
+foreach($view->inprogress as $tmp) {
+?>
+<a style="text-decoration: none; color: #333;" href="<?php echo $this->link('manage','bugs','view','id='.$tmp->bug_id); ?>">
+<?php 
+$listblock_array = array(
+	($i%2 == 0?'fff':'ccc'),$tmp->bug_priority,$tmp->bugtype_name,$tmp->bugcategory_short,$tmp->bug_id,$tmp->bug_title
+);
+
+vprintf($listblock,$listblock_array);
+?>
+</a>
+<?php 
+	$i++;
+}
+?>
+</div>
+
+<div style="margin: 30px 10px 10px 10px; border: 1px solid #333;">
+<div style="background: #D94625; padding: 3px; font-size: 11px; font-weight: bold; color: #fff;">
+My Open Bugs
+</div>
+<?php
+$i = 0;
+foreach($view->open as $tmp) {
+?>
+<a style="text-decoration: none; color: #333;" href="<?php echo $this->link('manage','bugs','view','id='.$tmp->bug_id); ?>">
+<?php 
+$listblock_array = array(
+	($i%2 == 0?'fff':'ccc'),$tmp->bug_priority,$tmp->bugtype_name,$tmp->bugcategory_short,$tmp->bug_id,$tmp->bug_title
+);
+
+vprintf($listblock,$listblock_array);
+?>
+</a>
+<?php 
+	$i++;
+}
+?>
+</div>
+
+<div style="margin: 30px 10px 10px 10px; border: 1px solid #333; color: #fff;">
+<div style="background: #069; padding: 3px; font-size: 11px; font-weight: bold; color: #fff;">
+My Bugs in Review
+</div>
+<?php
+$i = 0;
+foreach($view->other as $tmp) {
+?>
+<a style="text-decoration: none; color: #333;" href="<?php echo $this->link('manage','bugs','view','id='.$tmp->bug_id); ?>">
+<?php 
+$listblock_array = array(
+	($i%2 == 0?'fff':'ccc'),$tmp->bug_priority,$tmp->bugtype_name,$tmp->bugcategory_short,$tmp->bug_id,$tmp->bug_title
+);
+
+vprintf($listblock,$listblock_array);
+?>
+</a>
+<?php 
+	$i++;
+}
+?>
+</div>
+</div>
+<div style="float: right; text-align: center; width: 30%;">
+<img src="<?php echo $view->piechart; ?>" />
+<br /><br />
+== SPONSORS ==
+</div>
+<div style="clear: both;"></div>

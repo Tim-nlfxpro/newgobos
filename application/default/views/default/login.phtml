@@ -1,0 +1,54 @@
+<h1>Returning Customer?</h1>
+<form action="<?php echo $this->link('default','default','validate'); ?>" method="post">
+<?php
+if($session->get('login_error')):
+	echo '<div class="error">Invalid Email/ Password Combination</div>';
+endif;
+?>
+Email: <input type="text" name="email" /> &nbsp; 
+Password: <input type="password" name="password" />
+<input type="submit" value="Login" /><br /><br /><a href="<?php echo $this->link('default','default','forgot'); ?>">forgot password?</a>
+</form>
+<br /><br />
+<h1>Build a Custom Gobo</h1>
+<img src="docroot/images/gobo_steel.jpg" width="140" />
+<img src="docroot/images/gobo_one_color.jpg" width="140" />
+<img src="docroot/images/gobo_two_color.jpg" width="140" />
+<img src="docroot/images/gobo_full_color.jpg" width="140" />
+<br /><br />
+<form action="<?php echo $view->link(); ?>" method="post">
+<strong>Create an Account to Get Started:</strong>
+<?php 
+if($view->signup_error):
+	echo '<div class="error">'.$view->signup_error.'</div>';
+endif;
+?>
+<table width="100%">
+<tr>
+<td>First Name:</td>
+<td><input type="text" name="first_name" value="<?php echo $_POST['first_name']; ?>" /></td>
+</tr>
+
+<tr>
+<td>Last Name:</td>
+<td><input type="text" name="last_name" value="<?php echo $_POST['last_name']; ?>" /></td>
+</tr>
+
+<tr>
+<td>Email:</td>
+<td><input type="text" name="email" value="<?php echo $_POST['email']; ?>" /></td>
+</tr>
+
+<tr>
+<td>Create a Password:</td>
+<td><input type="password" name="password" /></td>
+</tr>
+
+<tr>
+<td>Retype Password:</td>
+<td><input type="password" name="passwordconf" /></td>
+</tr>
+</table>
+<input type="text" name="validator" style="display: none;" />
+<input type="submit" name="register" value="Continue &raquo;" class="button" />
+</form>

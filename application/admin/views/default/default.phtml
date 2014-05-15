@@ -1,0 +1,119 @@
+<script language="javascript">
+var exp = 0;
+</script>
+<h1>Orders
+<div style="float: right;">
+<input type="button" value="Create Order" class="button" onclick="location.href='<?php echo $view->link('admin','order','create'); ?>';">
+</div></h1>
+<div id="exp" class="error" style="display: none;"></div>
+<br />
+<form action="<?php echo $view->link(); ?>" method="post">
+<strong>Sort By:</strong> &nbsp; 
+First Name: <input type="text" name="first_name" value="<?php echo $_POST['first_name']; ?>" /> &nbsp; &nbsp;
+Last Name: <input type="text" name="last_name" value="<?php echo $_POST['last_name']; ?>" /> &nbsp; &nbsp;
+<br />
+Email: <input type="text" name="email" value="<?php echo $_POST['email']; ?>" /> &nbsp; &nbsp;
+Status: 
+<select name="status">
+<option value=""> --- </option>
+<?php 
+	foreach($view->status as $stat) {
+		echo '<option value="'.$stat.'" '.($_POST['status'] == $stat ? 'selected' : '').'>'.ucwords($stat).'</option>';
+	}
+?>
+</select>
+<input type="reset" value="Reset" /> 
+<input type="submit" name="filter" value="Filter" />
+</form>
+<br />
+<?php
+if(count($view->myorders) == 0):
+	echo 'There are no orders yet.';
+else:
+
+	echo '<table border="0" width="100%" id="orders">';
+	
+	echo '<tr class="header">';
+	echo '<td><a href="'.$this->link('admin','default','default','orderby=order_id').'">Order #</a></td>';
+	echo '<td><a href="'.$this->link('admin','default','default','orderby=last_name,first_name').'">Customer</a></td>';
+	echo '<td><a href="'.$this->link('admin','default','default','orderby=event_name').'">Event Name</a></td>';
+	echo '<td><a href="'.$this->link('admin','default','default','orderby=deliver_by').'">Needed By</a></td>';
+	echo '<td><a href="'.$this->link('admin','default','default','orderby=status').'">Order Status</a></td>';
+	echo '<td>&nbsp;</td>';
+	echo '</tr>';
+	
+	foreach($view->myorders as $order) {
+		
+		echo '<tr id="order'.$order->order_id.'">';
+		echo '<td>#'.$order->order_id.'</td>';
+		echo '<td>'.$order->first_name.' '.$order->last_name.'</td>';
+		echo '<td>'.$order->event_name.'</td>';
+		echo '<td>'.(preg_match('/^[0-9]+$/',$order->deliver_by) ? date('m/d/Y', $order->deliver_by) : $order->deliver_by).'</td>';
+		
+		// Status ---
+		$text = ucfirst($order->status);
+		
+		if($order->status == 'proof'):
+			$text .= ' - Preview';
+		elseif($order->status == 'shipped'):
+			$text .= ' - '.$order->tracking_number;
+		endif;
+		
+		echo '<td>'.$text.'</td>';
+		// ---
+		
+		echo '<td><a href="'.$this->link('admin','order','view','id='.$order->order_id).'">More Details</a></td>';
+		echo '</tr>';
+		
+		$convtime = $order->deliver_by;
+		if(!preg_match('/^[0-9]{10}$/', $order->deliver_by)) {
+			$convtime = strtotime($order->deliver_by);
+		}
+		
+		if(!in_array($order->status, array('shipped', 'cancelled')) && $convtime && $convtime < time()+5*24*60*60) {
+			echo '<script language="javascript">exp++; $(\'#order'.$order->order_id.'\').children(\'td\').css(\'background\', \'#f33\').css(\'color\', \'#fff\');</script>';
+		}
+	}
+	
+	echo '</table>';
+
+endif;
+?>
+<script language="javascript">
+if(exp > 0) {
+	$('#exp').html('There are '+exp+' orders within 5 days of Delivery Date').fadeIn('slow');
+}
+
+pagehtml = '<div class="pager_container"><div id="pager_pages" style="float: left;">';
+
+pagehtml += '</div><div style="float: right;">Results per Page: <input type="text" value="15" onKeyUp="perPage = this.value; showPage(1); buildNav();" size="3" /></div><div style="clear: both;"></div></div>';
+$('#orders').after(pagehtml);
+
+perPage = 15;
+buildNav();
+showPage(1);
+
+function showPage(page) {
+	if(perPage < 1) { perPage = 1; }
+	min = (page - 1) * perPage;
+	max = page * perPage;
+	if(page == 1) { max++; }
+	$('#orders tr').hide();
+	$('#orders tr').slice(min,max).show();
+	$('#orders tr:first').show();
+	$('.pager_active').removeClass('pager_active');
+}
+
+function buildNav() {
+	rowCount = $('#orders tr').length - 1;
+	pages = Math.ceil(rowCount/perPage);
+	
+	pagenhtml = '';
+	for(i=1; i <= pages; i++) {
+		pagenhtml += '<a href="javascript:void(0);" onclick="showPage('+i+'); $(this).addClass(\'pager_active\');" class="pager">'+i+'</a>';
+	}
+	$('#pager_pages').html(pagenhtml);
+	$('.pager_container a:first').addClass('pager_active');
+}
+
+</script>
