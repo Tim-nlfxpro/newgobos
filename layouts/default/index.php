@@ -67,11 +67,12 @@
     <div id="site_content">
       <div class="sidebar">
         <!-- insert your sidebar items here -->
-	
+		<center>
         <!--Begin ClixTrac.com Banner Code -->
 		<a href="http://www.clixtrac.com/banner/click.php?banner=172937" target="_blank">
 		<img src="http://www.clixtrac.com/banner/172937.jpg" alt="" title="" border="0" width="160" height="500" /></a>
 		<!--End ClixTrac.com Banner Code -->
+		</center>
         <?php //echo $view->nlfxblogrss;
 	?>
 	<?php /*
