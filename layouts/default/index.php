@@ -68,8 +68,11 @@
       <div class="sidebar">
         <!-- insert your sidebar items here -->
 	
-        <h3>Latest News</h3>
-        <?php echo $view->nlfxblogrss;
+        <!--Begin ClixTrac.com Banner Code -->
+		<a href="http://www.clixtrac.com/banner/click.php?banner=172937" target="_blank">
+		<img src="http://www.clixtrac.com/banner/172937.jpg" alt="" title="" border="0" width="160" height="500" /></a>
+		<!--End ClixTrac.com Banner Code -->
+        <?php //echo $view->nlfxblogrss;
 	?>
 	<?php /*
 	<h3>Gobos for Good</h3>
